@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: v1-account-service-1-changeset.yml
+      relativeToChangelogFile: true

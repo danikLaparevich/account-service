@@ -1,0 +1,81 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-1
+      author: Laparevich Daniil
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: accounts
+        - not:
+            tableExists:
+              tableName: users
+        - not:
+            tableExists:
+              tableName: transactions
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: document_number
+                  type: varchar(255)
+              - column:
+                  name: document_type
+                  type: smallint
+
+        - createTable:
+            tableName: accounts
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: balance
+                  type: decimal(19,2)
+              - column:
+                  name: currency
+                  type: varchar(255)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: FK_accounts_user
+                    references: users(id)
+              - column:
+                  name: version
+                  type: bigint
+
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: amount
+                  type: decimal(19,2)
+              - column:
+                  name: timestamp
+                  type: timestamp
+              - column:
+                  name: account_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: FK_transactions_account
+                    references: accounts(id)
